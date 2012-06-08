@@ -1,6 +1,8 @@
 module Auditory
   #
-  # Extends a model adding auditory info
+  # Extends a model adding audit information, that is, the date and the user who created the resource and who last updated it.
+  # 
+  # To add this information 
   #
   module AuditoryInfo
 
@@ -19,7 +21,7 @@ module Auditory
      
       attribute_set(:creation_date, Time.now) if (attribute_get(:creation_date).nil? or not attribute_get(:creation_date) or attribute_get(:creation_date).to_s.strip.length == 0)
       
-      if Auditory::AuditoryInfo.method_defined?(:connected_user) 
+      if AuditoryInfo.method_defined?(:connected_user) 
         attribute_set(:creation_user, connected_user.username)
       end
       super
@@ -29,7 +31,7 @@ module Auditory
     #
     def update
       attribute_set(:last_update, Time.now)
-      if Auditory::AuditoryInfo.method_defined?(:connected_user)
+      if AuditoryInfo.method_defined?(:connected_user)
         attribute_set(:last_update_user, connected_user.username)
       end
       
