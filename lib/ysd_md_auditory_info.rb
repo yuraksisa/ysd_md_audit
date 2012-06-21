@@ -25,6 +25,13 @@ module Audit
       model.property :last_update_user, String, :field => 'last_update_user', :length => 20 # The user who updated it
     
     end
+    
+    #
+    # Returns the connected user
+    #
+    def connected_user
+      nil
+    end
 
   end #Auditor
   
@@ -55,7 +62,7 @@ module Audit
     #
     def create
      
-      attribute_set(:creation_date, Time.now) 
+      attribute_set(:creation_date, Time.now) if not attribute_get(:creation_date) or attribute_get(:creation_date).to_s.strip.length == 0
       attribute_set(:creation_user, connected_user.username) if connected_user
       
       super
