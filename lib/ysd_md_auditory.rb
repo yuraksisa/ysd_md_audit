@@ -1,1 +1,0 @@
-require 'ysd_md_auditory_info'
