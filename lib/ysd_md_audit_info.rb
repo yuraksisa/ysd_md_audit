@@ -18,6 +18,8 @@ module Audit
   module Auditor
 
     def self.prepare_model(model)
+      
+      # TODO Make sure the model is a DataMapper or Persistence resource
 
       model.property :creation_date, DateTime, :field => 'creation_date' # The creation date
       model.property :creation_user, DateTime, :field => 'creation_user' # The user who created it
