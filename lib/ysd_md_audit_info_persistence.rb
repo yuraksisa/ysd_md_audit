@@ -1,4 +1,4 @@
-model Audit
+module Audit
 
   #
   # Concrete auditor for Persistence models
