@@ -17,7 +17,7 @@ module Audit
   #
   module Auditor
 
-    def self.prepare_model(model)
+    def self.included(model)
       
       # TODO Make sure the model is a DataMapper or Persistence resource
 
@@ -25,6 +25,14 @@ module Audit
       model.property :creation_user, DateTime, :field => 'creation_user' # The user who created it
       model.property :last_update, DateTime, :field => 'last_update'     # If the content has been modified it holds the last update date
       model.property :last_update_user, String, :field => 'last_update_user', :length => 20 # The user who updated it
+
+      if Persistence::Model.descendants.include?(model)  
+         model.send :include, AuditorPersistence
+      else
+         if DataMapper::Model.descendants.include?(model)
+           model.send :include, AuditorDataMapper
+         end
+      end
     
     end
     

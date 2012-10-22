@@ -4,12 +4,7 @@ module Audit
   # Concrete auditor for Persistence models
   #
   module AuditorPersistence
-     include Auditor
-    
-    def self.included(model)
-      Auditor.prepare_model(model)       
-    end    
-     
+         
     #
     # Overwritten to store auditory data
     #

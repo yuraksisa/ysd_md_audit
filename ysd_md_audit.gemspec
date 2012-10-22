@@ -9,6 +9,6 @@ Gem::Specification.new do |s|
   s.homepage = "http://github.com/yuraksisa/ysd_md_audit"
 
 
-  s.add_runtime_dependency "data_mapper", "1.1.0"
+  s.add_runtime_dependency "data_mapper", "1.2.0"
   s.add_runtime_dependency "ysd-persistence"      # Persistence system  
 end
