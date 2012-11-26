@@ -1,3 +1,5 @@
+require 'ysd-md-user-profile' unless defined?Users::Profile
+
 module Audit
 
   # Model auditor
@@ -19,12 +21,12 @@ module Audit
 
     def self.included(model)
       
-      # TODO Make sure the model is a DataMapper or Persistence resource
-
-      model.property :creation_date, DateTime, :field => 'creation_date' # The creation date
-      model.property :creation_user, DateTime, :field => 'creation_user' # The user who created it
-      model.property :last_update, DateTime, :field => 'last_update'     # If the content has been modified it holds the last update date
-      model.property :last_update_user, String, :field => 'last_update_user', :length => 20 # The user who updated it
+      if model.respond_to?(:property)
+        model.property :creation_date, DateTime, :field => 'creation_date' # The creation date
+        model.property :creation_user, String, :field => 'creation_user', :length => 20 # The user who created it
+        model.property :last_update, DateTime, :field => 'last_update'     # If the content has been modified it holds the last update date
+        model.property :last_update_user, String, :field => 'last_update_user', :length => 20 # The user who updated it
+      end
 
       if Persistence::Model.descendants.include?(model)  
          model.send :include, AuditorPersistence
@@ -40,7 +42,7 @@ module Audit
     # Returns the connected user
     #
     def connected_user
-      nil
+      return Users::Profile::ANONYMOUS_USER
     end
 
   end #Auditor
