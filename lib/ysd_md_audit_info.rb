@@ -1,4 +1,5 @@
 require 'ysd-md-user-profile' unless defined?Users::Profile
+require 'ysd-md-user-connected_user'
 
 module Audit
 
@@ -18,6 +19,7 @@ module Audit
   #
   #
   module Auditor
+    include Users::ConnectedUser 
 
     def self.included(model)
       
@@ -28,23 +30,22 @@ module Audit
         model.property :last_update_user, String, :field => 'last_update_user', :length => 20 # The user who updated it
       end
 
-      if Persistence::Model.descendants.include?(model)  
-         model.send :include, AuditorPersistence
-      else
-         if DataMapper::Model.descendants.include?(model)
-           model.send :include, AuditorDataMapper
-         end
+      if model.respond_to?(:before)
+
+        model.before :create do
+          attribute_set(:creation_date, Time.now) if self.creation_date.nil? or self.creation_date.empty?
+          attribute_set(:creation_user, connected_user.username) if connected_user
+        end
+
+        model.before :update do
+          attribute_set(:last_update, Time.now)
+          attribute_set(:last_update_user, connected_user.username) if connected_user
+        end
+
       end
     
     end
     
-    #
-    # Returns the connected user
-    #
-    def connected_user
-      return Users::Profile::ANONYMOUS_USER
-    end
-
   end #Auditor
   
 end #Audit
