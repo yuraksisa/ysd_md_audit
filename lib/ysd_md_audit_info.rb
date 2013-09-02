@@ -33,13 +33,13 @@ module Audit
       if model.respond_to?(:before)
 
         model.before :create do
-          attribute_set(:creation_date, Time.now) if self.creation_date.nil? or self.creation_date.empty?
-          attribute_set(:creation_user, connected_user.username) if connected_user
+          self.attribute_set(:creation_date, Time.now) if self.creation_date.nil? or self.creation_date.empty?
+          self.attribute_set(:creation_user, connected_user.username) if connected_user
         end
 
         model.before :update do
-          attribute_set(:last_update, Time.now)
-          attribute_set(:last_update_user, connected_user.username) if connected_user
+          self.last_update = Time.now
+          self.last_update_user = connected_user.username if connected_user
         end
 
       end
